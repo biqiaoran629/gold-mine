@@ -54,8 +54,8 @@ const validate = async (mine, logFile, mineScore) => {
       if (!validY.includes(step[1])) valid = false
 
       // You can't go out of bounds
-      if (step[0] > mine[0].length -1) valid = false;
-      if (step[1] > mine.length -1) valid = false;
+      if (step[0] > mine[0].length - 1) valid = false;
+      if (step[1] > mine.length - 1) valid = false;
 
       if (step[1] === position.y + 1) {
         currentDirection = DIRECTIONS.UP;
