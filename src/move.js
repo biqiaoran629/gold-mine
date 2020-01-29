@@ -1,6 +1,18 @@
 import Position from "./position.js";
+import helper from "./helper.js";
 
-let movedRight;
+let dp;
+
+/**
+ * Calling populateSteps to run DP on the mine, and find the starting position
+ * @param {Object} mine 
+ * @return {Integer} starting row
+ */
+const findStartingPosition = (mine) => {
+  const result = helper.populateSteps(mine);
+  dp = result.goldGrid;
+  return result.row;
+}
 
 /**
  * Replace the logic in this function with your own custom movement algorithm.
@@ -17,25 +29,19 @@ let movedRight;
  * @return {Position} The new position of the miner.
  */
 const move = (mine, position) => {
-  // TODO: write logic for miner. The current approach naive approach is to simply:
-  //   1. Start at (0,0)
-  //   2. Always moves right
-
-  const newX = (position && position.x + 1) || 0;
-
-  let newY;
-
-  if (!movedRight) {
-    newY = (position && position.y) || 0;
-
-    movedRight = true;
+  if (!position) {
+    const row = findStartingPosition(mine);
+    return new Position(0, row);
   } else {
-    newY = (position && position.y + 1) || 0;
-
-    movedRight = false;
+    const currentPosition = dp[position.y][position.x];
+    if (currentPosition.direction === 'R') {
+      return new Position(position.x + 1, position.y);
+    } else if (currentPosition.direction === 'T') {
+      return new Position(position.x + 1, position.y - 1);
+    } else {
+      return new Position(position.x + 1, position.y + 1);
+    }
   }
-
-  return new Position(newX, newY);
 };
 
 export default move;
